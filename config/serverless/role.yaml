@@ -1,0 +1,54 @@
+Resources:
+  ServerlessExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: serverless-execution-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+                - apigateway.amazonaws.com
+                - events.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: serverless-resource-access
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: arn:aws:logs:*:*:*
+              - Effect: Allow
+                Action:
+                  - dynamodb:*
+                Resource: arn:aws:dynamodb:*:*:table/*
+              - Effect: Allow
+                Action:
+                  - sns:*
+                Resource: arn:aws:sns:*:*:*
+              - Effect: Allow
+                Action:
+                  - sqs:*
+                Resource: arn:aws:sqs:*:*:*
+              - Effect: Allow
+                Action:
+                  - lambda:*
+                Resource: arn:aws:lambda:*:*:*
+              - Effect: Allow
+                Action:
+                  - apigateway:*
+                Resource: arn:aws:apigateway:*::*
+              - Effect: Allow
+                Action:
+                  - events:*
+                Resource: arn:aws:events:*:*:*
+Outputs:
+  ServerlessExecutionRoleArn:
+    Description: ARN of the Serverless Execution Role
+    Value: !GetAtt ServerlessExecutionRole.Arn

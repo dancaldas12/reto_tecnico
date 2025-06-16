@@ -1,0 +1,32 @@
+Resources:
+  CustomApiKey:
+    Type: AWS::ApiGateway::ApiKey
+    Properties:
+      Name: UE2APIKEY001
+      Enabled: true
+      Value: ${self:custom.xapiKey.${opt:stage}}
+      StageKeys:
+        - RestApiId: !Ref ApiGatewayRestApi
+          StageName: ${self:provider.stage}
+
+  CustomUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Properties:
+      UsagePlanName: UE2PLANUSO001
+      ApiStages:
+        - ApiId:
+            Ref: ApiGatewayRestApi
+          Stage: ${self:provider.stage}
+      Throttle:
+        BurstLimit: 100
+        RateLimit: 50
+      Quota:
+        Limit: 500
+        Period: MONTH
+  
+  CustomUsagePlanKey:
+    Type: AWS::ApiGateway::UsagePlanKey
+    Properties:
+      KeyId: !Ref CustomApiKey
+      KeyType: API_KEY
+      UsagePlanId: !Ref CustomUsagePlan

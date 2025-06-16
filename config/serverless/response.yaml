@@ -1,0 +1,16 @@
+headers:
+  Content-Type: "'application/json'"
+template: $input.json('$')
+statusCodes:
+  200:
+    pattern: ''
+  400:
+    pattern: '[\\s\\S]*\\[400\\][\\s\\S]*'
+  401:
+    pattern: '[\\s\\S]*\\[401\\][\\s\\S]*'
+  403:
+    pattern: '[\\s\\S]*\\[403\\][\\s\\S]*'
+  404:
+    pattern: '[\\s\\S]*\\[404\\][\\s\\S]*'
+  500:
+    pattern: '[\\s\\S]*\\[500\\][\\s\\S]*'

@@ -1,0 +1,18 @@
+Resources:
+  Appointments:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:provider.environment.DYNAMODB_TABLE}
+      AttributeDefinitions:
+        - AttributeName: insuredId
+          AttributeType: S
+        - AttributeName: scheduleId
+          AttributeType: N
+        - AttributeName: countryISO
+          AttributeType: S
+      KeySchema:
+        - AttributeName: insuredId
+          KeyType: HASH
+        - AttributeName: scheduleId
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST

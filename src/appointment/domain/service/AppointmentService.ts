@@ -1,0 +1,44 @@
+import { Inject, Injectable, Logger } from "@nestjs/common";
+import { buildErrorResponse, buildOkResponse } from "../common/Util";
+import { AppointmentRepository } from "../repository/AppointmentRepository";
+import { SnsSupport } from "../../../common/application/supports";
+
+@Injectable()
+export class AppointmentDomainService {
+    private readonly logger = new Logger(AppointmentDomainService.name);
+    private readonly snsSupport: SnsSupport;
+
+    constructor(
+        @Inject("AppointmentRepository")
+        private readonly appointmentRepository: AppointmentRepository,
+    ) {
+        this.snsSupport = new SnsSupport();
+    }
+
+    public async getAppointmentsService(insuredId: string): Promise<object> {
+        this.logger.log(`Fetching appointments for insuredId: ${insuredId}`);
+        const appointments = await this.appointmentRepository.getAppointmentsRepository(insuredId);
+
+        if (!appointments || appointments.length === 0) {
+            return buildErrorResponse(appointments);
+        } else {
+            return buildOkResponse(appointments);
+        }
+      }
+
+    public async createAppointmentService(insuredId: string, scheduleId: number, countryISO: string): Promise<{ message: string }> {
+        await this.appointmentRepository.saveAppointment(insuredId, scheduleId, countryISO);
+        await this.snsSupport.publish(
+            process.env.SNS_TOPIC_ARN || "",
+            JSON.stringify({
+                insuredId,
+                scheduleId,
+                countryISO
+            }),
+            {
+                "countryISO": { DataType: "String", StringValue: countryISO },
+            }
+        );
+        return { message: "Agendamiento en proceso" };
+    }
+}

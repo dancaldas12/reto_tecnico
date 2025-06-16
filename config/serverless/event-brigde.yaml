@@ -1,0 +1,12 @@
+Resources:
+  MyeventRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: "Event rule for country specific events"
+      EventPattern:
+        source:
+          - "dico-api-citamed"
+      State: "ENABLED"
+      Targets:
+        - Arn: !GetAtt SQSReturnQueue.Arn
+          Id: "TargetReturn"

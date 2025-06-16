@@ -1,0 +1,6 @@
+Resources:
+  MySNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub "${ServiceName}SNSCOUNTRY01"
+      DisplayName: !Sub "Notifications"
