@@ -1,4 +1,4 @@
 export interface AppointmentRepository {
   getAppointmentsRepository(insuredId: string): Promise<any>;
-  saveAppointment(insuredId: string, scheduleId: number, countryISO: string): Promise<void>;
+  saveAppointment(insuredId: string, scheduleId: string, countryISO: string): Promise<void>;
 }

@@ -1,5 +1,5 @@
 export interface AppointmentSaveDto {
     insuredId: string;
-    scheduleId: number;     
+    scheduleId: string;     
     countryISO: string; 
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from "@nestjs/common";
+import { Controller, Get, Post, Body, Logger } from "@nestjs/common";
 import { AppointmentRequestValidation } from "../../application/validation/AppointmentValidation";
 import { RequestDto } from "../../../common/application/dto/RequestDto";
 import { AppointmentApplicationService } from "../../application/service/AppointmentService";

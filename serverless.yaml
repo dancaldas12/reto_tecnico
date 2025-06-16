@@ -11,11 +11,12 @@ provider:
       - ${self:custom.xapiKey.${opt:stage}}
   stage: ${opt:stage,'DESA'}
   region: ${self:custom.regions.code.${opt:stage}}
-  timeout: 60
   memorySize: 512
   versionFunctions: false
-  logRetentionInDays: 30
+  logRetentionInDays: 14
   architecture: arm64
+  layers:
+    - arn:aws:lambda:us-east-2:829357759972:layer:layer_indra:1
 
   tracing:
     lambda: true
@@ -58,6 +59,9 @@ package:
     - 'node_modules/**'
     - '!node_modules/serverless/**'
     - '!node_modules/@aws-sdk/**'
+    - '!node_modules/aws-sdk/**'
+    - '!test/**'
+    - '!config/**'
     - 'src/common/**'
     - 'package.json'
 
@@ -126,6 +130,6 @@ functions:
 resources:
   - ${file(./config/serverless/dynamodb.yaml)}
   - ${file(./config/serverless/role.yaml)}
-  - ${file(./config/serverless/useplan.yaml)}
+  # - ${file(./config/serverless/useplan.yaml)}
   - ${file(./config/serverless/sns.yaml)}
   - ${file(./config/serverless/sqs.yaml)}

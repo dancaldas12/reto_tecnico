@@ -19,5 +19,5 @@ export const INSERT = `INSERT INTO appointments_country (
   :countryIso,
   :status,
   :dateTime,
-	now()
+  now()
 );`;

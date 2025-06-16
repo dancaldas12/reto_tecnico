@@ -8,8 +8,6 @@ Resources:
           AttributeType: S
         - AttributeName: scheduleId
           AttributeType: N
-        - AttributeName: countryISO
-          AttributeType: S
       KeySchema:
         - AttributeName: insuredId
           KeyType: HASH

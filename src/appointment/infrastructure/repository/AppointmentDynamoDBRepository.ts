@@ -22,7 +22,7 @@ export class AppointmentDynamoDBRepository implements AppointmentRepository {
     return result.Items || [];
   }
 
-  public async saveAppointment(insuredId: string, scheduleId: number, countryISO: string): Promise<void> {
+  public async saveAppointment(insuredId: string, scheduleId: string, countryISO: string): Promise<void> {
     this.logger.log(`Saving appointment for insuredId: ${insuredId}`);
     const dynamoClient = getInstanciaDynamo();
     const command = new PutItemCommand({

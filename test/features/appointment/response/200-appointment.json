@@ -1,0 +1,14 @@
+[
+    {
+        "insuredId": "00001",
+        "scheduleId": "10034320243009123400",
+        "countryISO": "PE",
+        "status": "pending"
+    },
+    {
+        "insuredId": "00002",
+        "scheduleId": "10034320243009123400",
+        "countryISO": "CL",
+        "status": "pending"
+    }
+]

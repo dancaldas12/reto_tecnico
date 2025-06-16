@@ -1,0 +1,5 @@
+{
+    "origin": "LAMBDA_EVENT" ,
+    "action": "",
+    "payload": "{ insuredId: string, scheduleId: number, countryISO: string }"
+}

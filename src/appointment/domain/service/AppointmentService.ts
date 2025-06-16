@@ -26,7 +26,7 @@ export class AppointmentDomainService {
         }
       }
 
-    public async createAppointmentService(insuredId: string, scheduleId: number, countryISO: string): Promise<{ message: string }> {
+    public async createAppointmentService(insuredId: string, scheduleId: string, countryISO: string): Promise<{ message: string, status: string }> {
         await this.appointmentRepository.saveAppointment(insuredId, scheduleId, countryISO);
         await this.snsSupport.publish(
             process.env.SNS_TOPIC_ARN || "",
@@ -39,6 +39,7 @@ export class AppointmentDomainService {
                 "countryISO": { DataType: "String", StringValue: countryISO },
             }
         );
-        return { message: "Agendamiento en proceso" };
+        
+        return { status: 'success' , message: "Agendamiento en proceso" };
     }
 }

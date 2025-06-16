@@ -11,14 +11,14 @@ export class PeruMysqlDBRepository implements PeruRepository {
   public async save(custom: Schedule): Promise<any> {
     const instancia = obtenerInstancia();
     return instancia.executeQuery(INSERT, {
-      insuredId: ${custom.insuredId},
-      centerId: ${custom.espacio.centerId},
-      medicalId: ${custom.espacio.medicId},
-      specialtyId: ${custom.espacio.specialtyId},
-      scheduleId: ${custom.scheduleId},
-      countryISO: ${custom.countryISO},
-      status: completed,
-      dateTime: ${custom.espacio.date},
+      insuredId: `${custom.insuredId}`,
+      centerId: `${custom.espacio.centerId}`,
+      medicalId: `${custom.espacio.medicId}`,
+      specialtyId: `${custom.espacio.specialtyId}`,
+      scheduleId: `${custom.scheduleId}`,
+      countryISO: `${custom.countryISO}`,
+      status: `completed`,
+      dateTime: `${custom.espacio.date}`,
     });
   }
 }

@@ -2,7 +2,7 @@ Resources:
   SQSReturnQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: !Sub "${ServiceName}SQSRETURNQUEUE01"
+      QueueName: !Sub "SQSRETURNQUEUE01"
       RedrivePolicy:
         deadLetterTargetArn: !GetAtt SQSDeadLetterQueue.Arn
         maxReceiveCount: 5
@@ -10,7 +10,7 @@ Resources:
   SQSPEQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: !Sub "${ServiceName}SQSPEQUEUE01"
+      QueueName: !Sub "SQSPEQUEUE01"
       RedrivePolicy:
         deadLetterTargetArn: !GetAtt SQSDeadLetterQueue.Arn
         maxReceiveCount: 5
@@ -18,7 +18,7 @@ Resources:
   SQSCLQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: !Sub "${ServiceName}SQSCLQUEUE01"
+      QueueName: !Sub "SQSCLQUEUE01"
       RedrivePolicy:
         deadLetterTargetArn: !GetAtt SQSDeadLetterQueue.Arn
         maxReceiveCount: 5
@@ -26,7 +26,7 @@ Resources:
   SQSDeadLetterQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: !Sub "${ServiceName}SQSPEQUEUE01DLQ"
+      QueueName: !Sub "SQSPEQUEUE01DLQ"
   
   MySNSSubscriptionPE:
     Type: AWS::SNS::Subscription
@@ -35,8 +35,7 @@ Resources:
       Protocol: sqs
       Endpoint: !GetAtt SQSPEQueue.Arn
       FilterPolicy:
-        countryISO:
-          - PE
+        countryISO: "PE"
 
   MySNSSubscriptionCL:
     Type: AWS::SNS::Subscription
@@ -45,5 +44,4 @@ Resources:
       Protocol: sqs
       Endpoint: !GetAtt SQSCLQueue.Arn
       FilterPolicy:
-        countryISO:
-          - CL
+        countryISO: "CL"
