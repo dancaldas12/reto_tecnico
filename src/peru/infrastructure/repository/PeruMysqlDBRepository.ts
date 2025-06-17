@@ -10,7 +10,7 @@ export class PeruMysqlDBRepository implements PeruRepository {
 
   public async save(custom: Schedule): Promise<any> {
     const instancia = obtenerInstancia();
-    return instancia.executeQuery(INSERT, {
+    return await instancia.executeQuery(INSERT, {
       insuredId: `${custom.insuredId}`,
       centerId: `${custom.espacio.centerId}`,
       medicalId: `${custom.espacio.medicId}`,

@@ -38,7 +38,7 @@ defineFeature(feature, (test) => {
     then(
       /^deberia recibir una respuesta del API en un tiempo maximo de 5 segundos con (.*)$/,
       (status: string) => {
-
+        Logger.log(`Response: ${JSON.stringify(response)}`, 'AppointmentGet.spec.ts');
         expect(response.status).toEqual(status);
         if(response.status !== 'error') {
           expect(response.message).toEqual(data.message);

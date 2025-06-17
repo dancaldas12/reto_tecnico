@@ -20,10 +20,6 @@ export class PeruDomainService {
         const custom: Schedule = { espacio, insuredId, scheduleId, countryISO };
         const appointments = await this.peruRepository.save(custom);
         
-        if (!appointments || appointments.length === 0) {
-            return buildErrorResponse(appointments);
-        } else {
-            return buildOkResponse(appointments);
-        }
+        return { status: 'success' , message: "Agendamiento en proceso" };
       }
 }

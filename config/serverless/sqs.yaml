@@ -3,45 +3,13 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: !Sub "SQSRETURNQUEUE01"
-      RedrivePolicy:
-        deadLetterTargetArn: !GetAtt SQSDeadLetterQueue.Arn
-        maxReceiveCount: 5
 
   SQSPEQueue:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: !Sub "SQSPEQUEUE01"
-      RedrivePolicy:
-        deadLetterTargetArn: !GetAtt SQSDeadLetterQueue.Arn
-        maxReceiveCount: 5
 
   SQSCLQueue:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: !Sub "SQSCLQUEUE01"
-      RedrivePolicy:
-        deadLetterTargetArn: !GetAtt SQSDeadLetterQueue.Arn
-        maxReceiveCount: 5
-
-  SQSDeadLetterQueue:
-    Type: AWS::SQS::Queue
-    Properties:
-      QueueName: !Sub "SQSPEQUEUE01DLQ"
-  
-  MySNSSubscriptionPE:
-    Type: AWS::SNS::Subscription
-    Properties:
-      TopicArn: !Ref MySNSTopic
-      Protocol: sqs
-      Endpoint: !GetAtt SQSPEQueue.Arn
-      FilterPolicy:
-        countryISO: "PE"
-
-  MySNSSubscriptionCL:
-    Type: AWS::SNS::Subscription
-    Properties:
-      TopicArn: !Ref MySNSTopic
-      Protocol: sqs
-      Endpoint: !GetAtt SQSCLQueue.Arn
-      FilterPolicy:
-        countryISO: "CL"

@@ -4,3 +4,21 @@ Resources:
     Properties:
       TopicName: !Sub "SNSCOUNTRY01"
       DisplayName: !Sub "Notifications"
+
+  PESubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref MySNSTopic
+      Protocol: sqs
+      Endpoint: !GetAtt SQSPEQueue.Arn
+      FilterPolicy:
+        countryISO: ["PE"]
+
+  CLSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref MySNSTopic
+      Protocol: sqs
+      Endpoint: !GetAtt SQSCLQueue.Arn
+      FilterPolicy:
+        countryISO: ["CL"]

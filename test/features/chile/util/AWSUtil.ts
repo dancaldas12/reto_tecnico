@@ -1,4 +1,4 @@
-import { ChileMysqlDBRepository } from '../../../../src/peru/infrastructure/repository/ChileMysqlDBRepository';                              
+import { ChileMysqlDBRepository } from '../../../../src/chile/infrastructure/repository/ChileMysqlDBRepository';                              
 
 export const buildRequest = (action: string, payload: object, path: any, method) => {
   const evento = require('../request/lambda.json');

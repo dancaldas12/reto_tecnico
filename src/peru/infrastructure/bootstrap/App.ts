@@ -21,12 +21,16 @@ export const handler = async (
   let result: any;
   // GET /appointments
   Logger.log(`Received event: ${JSON.stringify(event)}`, 'Handler');
-  if (event.method === 'GET') {
-    result = await peruController.saveEvent(event);
-  }
-
+  // if (event.method === 'GET') {
+  result = await peruController.saveEvent(event);
   return {
-    statusCode: 404,
-    body: JSON.stringify({ message: 'Not found' }),
+    statusCode: 200,
+    body: JSON.stringify(result),
   };
+  // }
+
+  // return {
+  //   statusCode: 404,
+  //   body: JSON.stringify({ message: 'Not found' }),
+  // };
 };
