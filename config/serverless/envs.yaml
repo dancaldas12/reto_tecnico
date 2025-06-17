@@ -43,9 +43,9 @@ deploymentBucket:
 # Lambda's role
 # Colocar el nombre de los roles creados por el arquitecto específicamente para cada lambda o para el repositorio
 role:
-  DESA: arn:aws:iam::${self:custom.accountId}:role/role
-  TEST: arn:aws:iam::${self:custom.accountId}:role/role
-  PROD: arn:aws:iam::${self:custom.accountId}:role/role
+  DESA: arn:aws:iam::${self:custom.accountId}:role/serverless-execution-role
+  TEST: arn:aws:iam::${self:custom.accountId}:role/serverless-execution-role
+  PROD: arn:aws:iam::${self:custom.accountId}:role/serverless-execution-role
 
 # VPCs (Para APIs Canal por le general no se requiere y se puede eliminar)
 vpc:
@@ -79,3 +79,8 @@ xapiKey:
   DESA: A9vX7PmKqD25o8NgnUOYZrQWLMve6Cblo4JTFsC3
   TEST: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   PROD: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+snsTopicCountry:
+  DESA: arn:aws:sns:us-east-2:829357759972:SNSCOUNTRY01
+  TEST: arn:aws:sns:us-east-2:000000000000:topictest
+  PROD: arn:aws:sns:us-east-1:000000000000:topicprod

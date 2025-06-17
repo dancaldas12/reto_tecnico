@@ -21,11 +21,15 @@ export const handler = async (
   let result: any;
   // GET /appointments
   Logger.log(`Received event: ${JSON.stringify(event)}`, 'Handler');
-   result = await chileController.saveEvent(event);
-  return {
-    statusCode: 200,
-    body: JSON.stringify(result),
-  };
+  if (event.Records && event.Records.length > 0) {
+    let customEvent = JSON.parse(event.Records[0].body)
+    customEvent.payload = JSON.parse(customEvent.Message);
+    result = await chileController.saveEvent(customEvent);
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result),
+    };
+  }
 
   // return {
   //   statusCode: 404,

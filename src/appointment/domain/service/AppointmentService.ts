@@ -28,7 +28,8 @@ export class AppointmentDomainService {
 
     public async createAppointmentService(insuredId: string, scheduleId: string, countryISO: string): Promise<{ message: string, status: string }> {
         await this.appointmentRepository.saveAppointment(insuredId, scheduleId, countryISO);
-        await this.snsSupport.publish(
+        Logger.log( `DESTINO ${countryISO}`);
+        const msg = await this.snsSupport.publish(
             process.env.SNS_TOPIC_ARN || "",
             JSON.stringify({
                 insuredId,
@@ -39,7 +40,18 @@ export class AppointmentDomainService {
                 "countryISO": { DataType: "String", StringValue: countryISO },
             }
         );
-        
+        Logger.log(`SNS message published: ${JSON.stringify(msg)}`);
         return { status: 'success' , message: "Agendamiento en proceso" };
     }
+
+    public async updateAppointmentsService(insuredId: string): Promise<object> {
+        this.logger.log(`Fetching appointments for insuredId: ${insuredId}`);
+        const appointments = await this.appointmentRepository.updateStatus(insuredId);
+
+        if (!appointments || appointments.length === 0) {
+            return buildErrorResponse(appointments);
+        } else {
+            return buildOkResponse(appointments);
+        }
+      }
 }

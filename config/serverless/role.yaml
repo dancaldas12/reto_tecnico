@@ -27,7 +27,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - dynamodb:*
-                Resource: arn:aws:dynamodb:*:*:table/*
+                Resource: arn:aws:dynamodb:*:*:*
               - Effect: Allow
                 Action:
                   - sns:*

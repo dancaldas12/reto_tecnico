@@ -14,7 +14,7 @@ export class SnsSupport {
                 MessageAttributes: attributes
             };
             const command = new PublishCommand(params);
-            await this.client.send(command);
+            return await this.client.send(command);
         } catch (error) {
             console.error("Error publishing message to SNS:", error);
             throw error;

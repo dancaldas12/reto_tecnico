@@ -4,7 +4,7 @@ import { SnsSupport } from '../../../../src/common/application/supports';
 export const buildRequest = (action: string, payload: object, path: any, method) => {
   const evento = require('../request/lambda.json');
   evento.action = action;
-  evento.payload = payload;
+  evento.body = payload;
   evento.path = path;
   evento.method = method;
   return evento;

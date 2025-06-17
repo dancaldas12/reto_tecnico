@@ -17,7 +17,8 @@ provider:
       throttle:
         burstLimit: 100
         rateLimit: 50
-    
+  iam:
+    role: ${self:custom.role.${opt:stage}}
   stage: ${opt:stage,'DESA'}
   region: ${self:custom.regions.code.${opt:stage}}
   memorySize: 512
@@ -39,7 +40,7 @@ provider:
     STAGE: ${self:provider.stage}
     LOG_LEVEL: 'INFO,DEBUG,ERROR'
     DYNAMODB_TABLE: Appointment-${self:provider.stage}
-    SNS_TOPIC_ARN: !Ref MySNSTopic
+    SNS_TOPIC_ARN:  ${self:custom.snsTopicCountry.${opt:stage}}
     MYSQL_LOCAL: ''
 
 custom:
@@ -55,6 +56,7 @@ custom:
   environmentsTags: ${file(./config/serverless/envs.yaml):environmentsTags}
   regions: ${file(./config/serverless/envs.yaml):regions}
   xapiKey: ${file(./config/serverless/envs.yaml):xapiKey}
+  snsTopicCountry: ${file(./config/serverless/envs.yaml):snsTopicCountry}
 
 plugins:
   - serverless-offline
@@ -65,14 +67,13 @@ package:
   patterns:
     - '!*/**'
     - '!*'
-    - 'node_modules/**'
-    - '!node_modules/serverless/**'
-    - '!node_modules/@aws-sdk/**'
-    - '!node_modules/aws-sdk/**'
+    - '!node_modules/**'
+    - '!package-lock.json'
     - '!test/**'
     - '!config/**'
-    - 'src/common/**'
-    - 'package.json'
+    - 'src/**'
+    - '!test/**'
+    - '!package.json'
 
 functions:
   appointment:
@@ -81,6 +82,7 @@ functions:
       - http:
           path: /V1/appointment/{insuredId}
           method: get
+          # private: true
           integration: lambda
           cors:
             origin: '*'
@@ -93,13 +95,14 @@ functions:
             allowCredentials: false
           request:
             parameters:
-              querystrings:
+              paths:
                 insuredId: true
           response:
             ${file(config/serverless/response.yaml)}
       - http:
           path: /V1/appointment
           method: post
+          # private: true
           integration: lambda
           cors:
             origin: '*'

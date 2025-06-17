@@ -4,6 +4,7 @@ export class RequestDto {
   path: object;
   user: User | null;
   trace: object;
+  body: object;
 }
 
 interface User {

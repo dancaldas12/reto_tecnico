@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { getInstanciaDynamo } from "./DynamoDB";
-import { QueryCommand, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { QueryCommand, PutItemCommand, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import { AppointmentRepository } from "../../domain/repository/AppointmentRepository";
 
 @Injectable()
@@ -11,7 +11,7 @@ export class AppointmentDynamoDBRepository implements AppointmentRepository {
     this.logger.log(`Fetching appointments for insuredId: ${insuredId}`);
     const dynamoClient = getInstanciaDynamo();
     const params = {
-      TableName: process.env.APPOINTMENTS_TABLE_NAME,
+      TableName: process.env.DYNAMODB_TABLE,
       KeyConditionExpression: 'insuredId = :insuredId',
       ExpressionAttributeValues: {
         ':insuredId': { S: insuredId },
@@ -23,10 +23,10 @@ export class AppointmentDynamoDBRepository implements AppointmentRepository {
   }
 
   public async saveAppointment(insuredId: string, scheduleId: string, countryISO: string): Promise<void> {
-    this.logger.log(`Saving appointment for insuredId: ${insuredId}`);
+    this.logger.log(`Saving appointment for insuredId: ${process.env.DYNAMODB_TABLE}`);
     const dynamoClient = getInstanciaDynamo();
     const command = new PutItemCommand({
-      TableName: process.env.APPOINTMENTS_TABLE_NAME,
+      TableName: process.env.DYNAMODB_TABLE,
       Item: {
         insuredId: { S: insuredId },
         scheduleId: { N: scheduleId.toString() },
@@ -35,6 +35,47 @@ export class AppointmentDynamoDBRepository implements AppointmentRepository {
         createdAt: { S: new Date().toISOString() },
       }
     });
+    await dynamoClient.send(command);
+  }
+
+  public async updateAppointmentRepository(insuredId: string): Promise<void> {
+    this.logger.log(`Saving appointment for insuredId: ${process.env.DYNAMODB_TABLE}`);
+    const dynamoClient = getInstanciaDynamo();
+    const command = new PutItemCommand({
+      TableName: process.env.DYNAMODB_TABLE,
+      Item: {
+        insuredId: { S: insuredId },
+        // scheduleId: { N: scheduleId.toString() },
+        // countryISO: { S: countryISO },
+        status: { S: "complete" },
+        // createdAt: { S: new Date().toISOString() },
+      }
+    });
+    await dynamoClient.send(command);
+  }
+
+  /**
+   * Actualiza el campo status de un registro específico en DynamoDB
+   * @param insuredId clave primaria del registro
+   * @param status nuevo valor para el campo status
+   */
+  public async updateStatus(insuredId: string): Promise<void> {
+    this.logger.log(`Actualizando status para insuredId: ${insuredId}`);
+    const dynamoClient = getInstanciaDynamo();
+    const params = {
+      TableName: process.env.DYNAMODB_TABLE,
+      Key: {
+        insuredId: { S: insuredId },
+      },
+      UpdateExpression: 'SET #s = :status',
+      ExpressionAttributeNames: {
+        '#s': 'status',
+      },
+      ExpressionAttributeValues: {
+        ':status': { S: "complete" },
+      },
+    };
+    const command = new UpdateItemCommand(params);
     await dynamoClient.send(command);
   }
 }

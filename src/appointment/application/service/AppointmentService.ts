@@ -40,4 +40,18 @@ export class AppointmentApplicationService {
             });
         });
     }
+
+    public async updateAppointmentApplication(payload: AppointmentDto): Promise<any> {
+        const { insuredId } = payload;
+        return this.appointmentDomainService.updateAppointmentsService(insuredId).catch((exception) => {
+            this.logger.error(JSON.stringify(exception));
+            throw new CustomException({
+                code: exception.code,
+                message: exception.message,
+                httpStatus: exception.httpCode,
+                details: exception.details || [],
+                exception
+            });
+        });
+    }
 }

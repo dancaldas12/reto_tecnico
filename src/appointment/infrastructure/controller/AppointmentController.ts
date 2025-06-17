@@ -18,7 +18,7 @@ export class AppointmentController {
     
     @Get("/appointments/:insuredId")
     public async getAppointments(request: RequestDto): Promise<object> {
-        const payload = { ...request.payload, ...request.path };
+        const payload = {...request.path };
         await this.appointmentValidation.getAppointments(payload as AppointmentDto);
         return this.appointmentApplicationService.getAppointmentsApplication(payload as AppointmentDto);
     }
@@ -26,10 +26,14 @@ export class AppointmentController {
 
     @Post("/appointments")
     public async createAppointment(@Body() request: RequestDto): Promise<object> {
-        const payload = { ...request.payload };
+        const payload = { ...request.body };
         await this.appointmentValidation.createAppointment(payload as AppointmentSaveDto);
         return this.appointmentApplicationService.createAppointmentApplication(payload as AppointmentSaveDto);
     }
 
-
+    public async updateAppointment(@Body() request: RequestDto): Promise<object> {
+        const payload = { ...request.payload };
+        await this.appointmentValidation.getAppointments(payload as AppointmentDto);
+        return this.appointmentApplicationService.updateAppointmentApplication(payload as AppointmentDto);
+    }
 };

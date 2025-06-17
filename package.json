@@ -8,7 +8,7 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "serverless offline start --stage DESA",
+    "start": "serverless offline start --stage DESA --noTimeout",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -18,7 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "deploy": "serverless deploy --stage DESA --verbose"
+    "deploy": "serverless deploy --stage DESA --verbose",
+    "deploy:dev": "serverless deploy function -f appointment --stage DESA --verbose"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.828.0",

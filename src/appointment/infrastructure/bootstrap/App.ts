@@ -22,6 +22,15 @@ export const handler = async (
   // Esto es complejo y no recomendado, pero aquí tienes un ejemplo simple:
   // Supón que tienes un controlador para GET /hello
   let result: any;
+  if (event.Records && event.Records.length > 0) {
+    let customEvent = JSON.parse(event.Records[0].body)
+    customEvent.payload = JSON.parse(customEvent.Message);
+    result = await appointmentController.updateAppointment(customEvent);
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result),
+    };
+  }
   // GET /appointments
   Logger.log(`Received event: ${JSON.stringify(event)}`, 'Handler');
   if (event.method === 'GET') {
