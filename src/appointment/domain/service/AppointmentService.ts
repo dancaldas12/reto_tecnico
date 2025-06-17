@@ -46,12 +46,12 @@ export class AppointmentDomainService {
 
     public async updateAppointmentsService(insuredId: string, scheduleId: string): Promise<object> {
         this.logger.log(`Fetching appointments for insuredId: ${insuredId}`);
-        const appointments = await this.appointmentRepository.updateStatus(insuredId, scheduleId);
+        await this.appointmentRepository.updateStatus(insuredId, scheduleId);
 
-        if (!appointments || appointments.length === 0) {
-            return buildErrorResponse(appointments);
-        } else {
-            return buildOkResponse(appointments);
-        }
+        // if (!appointments || appointments.length === 0) {
+        //     return buildErrorResponse(appointments);
+        // } else {
+        //     return buildOkResponse(appointments);
+        // }
       }
 }
