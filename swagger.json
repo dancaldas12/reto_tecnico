@@ -1,0 +1,174 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Appointment API",
+    "version": "1.0",
+    "description": "## 📌 Descripción\n\nEsta API forma parte del reto técnico para el puesto de Desarrollador Backend Senior en Rimac. Permite:\n\n- 📥 Registrar nuevas citas médicas\n- 🔍 Consultar citas médicas registradas por ID de asegurado\n\n### 🛠️ Tecnologías utilizadas\n- Node.js + TypeScript\n- NestJS + AWS Lambda (Serverless Framework)\n- DynamoDB, SNS, SQS, EventBridge, MySQL\n- Swagger para documentación\n\n### 📚 Endpoints disponibles\n\n#### GET /appointments/{insuredId}\nConsulta las citas de un asegurado usando su ID (`insuredId`).\n\n#### POST /appointments\nRegistra una nueva cita médica y la envía a procesamiento asíncrono.\n\n🧑‍💻 Desarrollado por: Danny Caldas\n🗓️ Fecha de entrega:17/06/2025"
+  },
+  "tags": [
+    {
+      "name": "appointments",
+      "description": "Operaciones relacionadas al agendamiento médico"
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://9g86zui043.execute-api.us-east-2.amazonaws.com/DESA/V1",
+      "description": "Entorno DESA en AWS"
+    }
+  ],
+  "paths": {
+    "/appointments/{insuredId}": {
+      "get": {
+        "tags": [
+          "appointments"
+        ],
+        "summary": "Consultar citas por insuredId",
+        "operationId": "AppointmentController_getAppointments",
+        "parameters": [
+          {
+            "name": "insuredId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "00001"
+            },
+            "description": "ID del asegurado (5 dígitos)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Citas encontradas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AppointmentResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Citas no encontradas"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/appointments": {
+      "post": {
+        "tags": [
+          "appointments"
+        ],
+        "summary": "Registrar una cita médica",
+        "operationId": "AppointmentController_createAppointment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppointmentRequest"
+              },
+              "example": {
+                "insuredId": "01234",
+                "scheduleId": "10034220250616124056",
+                "countryISO": "PE"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cita registrada correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Agendamiento en proceso"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key"
+      }
+    },
+    "schemas": {
+      "AppointmentRequest": {
+        "type": "object",
+        "required": [
+          "insuredId",
+          "scheduleId",
+          "countryISO"
+        ],
+        "properties": {
+          "insuredId": {
+            "type": "string",
+            "example": "01234",
+            "description": "ID del asegurado (5 dígitos)"
+          },
+          "scheduleId": {
+            "type": "string",
+            "example": "10034220250616124056",
+            "description": "ID del horario de la cita"
+          },
+          "countryISO": {
+            "type": "string",
+            "enum": [
+              "PE",
+              "CL"
+            ],
+            "example": "PE",
+            "description": "Código de país ISO"
+          }
+        }
+      },
+      "AppointmentResponse": {
+        "type": "object",
+        "properties": {
+          "insuredId": {
+            "type": "string",
+            "example": "00001"
+          },
+          "scheduleId": {
+            "type": "string",
+            "example": "10034220250616124056"
+          },
+          "countryISO": {
+            "type": "string",
+            "example": "PE"
+          },
+          "status": {
+            "type": "string",
+            "example": "pending"
+          }
+        }
+      }
+    }
+  }
+}

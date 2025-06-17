@@ -16,13 +16,16 @@ defineFeature(feature, (test) => {
     then
   }) => {
     let data: any;
-    let request: { action: string; body: object };
+    let request = { Records: [ { body: '' } ] };
     let response: { status: string; message: any };
     const action = 'createAppointment';
 
     given(/^se registra un nuevo caso con los datos (.*) (.*) (.*)$/, (insuredId: string, scheduleId: number, countryISO: string) => {
-      const body = { insuredId, scheduleId, countryISO };
-      request = buildRequest(action, body , {}, 'POST');
+      const body = JSON.stringify({
+        Message: JSON.stringify({ insuredId, scheduleId, countryISO })
+      });
+      request.Records[0].body = body;
+      // request = buildRequest(action, body , {}, 'POST');
     });
 
     and(/^retorna los siguientes valores (.*)$/, (ruta: string) => {

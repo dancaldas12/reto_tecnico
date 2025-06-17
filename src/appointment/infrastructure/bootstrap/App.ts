@@ -24,7 +24,7 @@ export const handler = async (
   let result: any;
   if (event.Records && event.Records.length > 0) {
     let customEvent = JSON.parse(event.Records[0].body)
-    customEvent.payload = JSON.parse(customEvent.Message);
+    customEvent.payload = customEvent.Message;
     result = await appointmentController.updateAppointment(customEvent);
     return {
       statusCode: 200,

@@ -59,13 +59,14 @@ export class AppointmentDynamoDBRepository implements AppointmentRepository {
    * @param insuredId clave primaria del registro
    * @param status nuevo valor para el campo status
    */
-  public async updateStatus(insuredId: string): Promise<void> {
+  public async updateStatus(insuredId: string, scheduleId: string): Promise<void> {
     this.logger.log(`Actualizando status para insuredId: ${insuredId}`);
     const dynamoClient = getInstanciaDynamo();
     const params = {
       TableName: process.env.DYNAMODB_TABLE,
       Key: {
         insuredId: { S: insuredId },
+        scheduleId: { N: scheduleId.toString() }, // Asegúrate de que scheduleId sea parte de la clave primaria
       },
       UpdateExpression: 'SET #s = :status',
       ExpressionAttributeNames: {

@@ -43,7 +43,7 @@ deploymentBucket:
 # Lambda's role
 # Colocar el nombre de los roles creados por el arquitecto específicamente para cada lambda o para el repositorio
 role:
-  DESA: arn:aws:iam::${self:custom.accountId}:role/serverless-execution-role
+  DESA: arn:aws:iam::829357759972:role/serverless-execution-role
   TEST: arn:aws:iam::${self:custom.accountId}:role/serverless-execution-role
   PROD: arn:aws:iam::${self:custom.accountId}:role/serverless-execution-role
 

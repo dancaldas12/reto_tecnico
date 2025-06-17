@@ -11,10 +11,10 @@ export class AppointmentRequestValidation {
             insuredId: Joi.string()
                 .required()
                 .empty('')
-                .pattern(/^\d{5}$/)
+                .pattern(/^[\d]{5}$/)
                 .max(5)
                 .message('El campo insuredId es obligatorio y debe contener 5 dígitos.')
-        });
+        }).unknown(true); // Permite campos adicionales
         await validate(schema, payload);
     }
 
@@ -25,17 +25,14 @@ export class AppointmentRequestValidation {
             insuredId: Joi.string()
                 .required()
                 .empty('')
-                .pattern(/^\d{5}$/)
+                .pattern(/^[\d]{5}$/)
                 .max(5)
                 .message('El campo insuredId es obligatorio y debe contener 5 dígitos.'),
             scheduleId: Joi.string()
                 .required(),
-            // .message('El campo scheduleId es obligatorio y debe ser un número.'),
             countryISO: Joi.string()
                 .required()
-            // .valid("PE", "CL")
-            // .message('El campo countryISO es obligatorio y debe ser "PE" o "CL".')
-        });
+        }).unknown(true); // Permite campos adicionales
         await validate(schema, payload);
         // } catch (error) {
         //     Logger.error(`Validation error in createAppointment: ${JSON.stringify(error)}`);

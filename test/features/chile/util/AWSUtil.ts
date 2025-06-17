@@ -1,4 +1,5 @@
 import { ChileMysqlDBRepository } from '../../../../src/chile/infrastructure/repository/ChileMysqlDBRepository';                              
+import { sendEventToEventBridge } from '../../../../src/common/application/supports/EventBrigde';
 
 export const buildRequest = (action: string, payload: object, path: any, method) => {
   const evento = require('../request/lambda.json');

@@ -44,9 +44,9 @@ export class AppointmentDomainService {
         return { status: 'success' , message: "Agendamiento en proceso" };
     }
 
-    public async updateAppointmentsService(insuredId: string): Promise<object> {
+    public async updateAppointmentsService(insuredId: string, scheduleId: string): Promise<object> {
         this.logger.log(`Fetching appointments for insuredId: ${insuredId}`);
-        const appointments = await this.appointmentRepository.updateStatus(insuredId);
+        const appointments = await this.appointmentRepository.updateStatus(insuredId, scheduleId);
 
         if (!appointments || appointments.length === 0) {
             return buildErrorResponse(appointments);

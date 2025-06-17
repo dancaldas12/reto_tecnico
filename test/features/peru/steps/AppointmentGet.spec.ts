@@ -16,13 +16,16 @@ defineFeature(feature, (test) => {
     then
   }) => {
     let data: any;
-    let request: { action: string; body: object };
+    let request = { Records: [ { body: '' } ] };
     let response: { status: string; message: any };
     const action = 'createAppointment';
 
     given(/^se registra un nuevo caso con los datos (.*) (.*) (.*)$/, (insuredId: string, scheduleId: number, countryISO: string) => {
-      const body = { insuredId, scheduleId, countryISO };
-      request = buildRequest(action, body , {}, 'POST');
+      const body = JSON.stringify({
+        Message: JSON.stringify({ insuredId, scheduleId, countryISO })
+      });
+      request.Records[0].body = body;
+      // request = buildRequest(action, body , {}, 'POST');
     });
 
     and(/^retorna los siguientes valores (.*)$/, (ruta: string) => {
@@ -38,7 +41,7 @@ defineFeature(feature, (test) => {
     then(
       /^deberia recibir una respuesta del API en un tiempo maximo de 5 segundos con (.*)$/,
       (status: string) => {
-        Logger.log(`Response: ${JSON.stringify(response)}`, 'AppointmentGet.spec.ts');
+
         expect(response.status).toEqual(status);
         if(response.status !== 'error') {
           expect(response.message).toEqual(data.message);

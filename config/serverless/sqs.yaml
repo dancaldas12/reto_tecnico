@@ -8,30 +8,8 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: !Sub "SQSPEQUEUE01"
-      Policy:
-        Version: '2012-10-17'
-        Id: SQSPEQueuePolicy
-        Statement:
-          - Effect: Allow
-            Principal: '*'
-            Action: 'SQS:SendMessage'
-            Resource: !GetAtt SQSPEQueue.Arn
-            Condition:
-              ArnEquals:
-                aws:SourceArn: !Sub MySNSTopic.Arn
 
   SQSCLQueue:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: !Sub "SQSCLQUEUE01"
-      Policy:
-        Version: '2012-10-17'
-        Id: SQSCLQueuePolicy
-        Statement:
-          - Effect: Allow
-            Principal: '*'
-            Action: 'SQS:SendMessage'
-            Resource: !GetAtt SQSCLQueue.Arn
-            Condition:
-              ArnEquals:
-                aws:SourceArn: !Sub MySNSTopic.Arn
